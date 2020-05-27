@@ -12,8 +12,8 @@
       <div class="shopping">
         <button class="btn"><i class="fa fa-shopping-cart"></i> Купить</button>
         <div class="icons">
-          <i class="fa fa-heart-o"></i>
-          <i class="fa fa-heart"></i>
+          <i class="fa fa-heart"  :style="marked && {color:'red'}" @click="$emit('mark')"></i>
+          <i class="fa fa-rocket"></i>
         </div>
       </div>
     </div>
@@ -23,7 +23,6 @@
 export default {
   name: 'Card',
   props: {
-    msg: String,
     art: {
       type: Number,
     },
@@ -38,7 +37,16 @@ export default {
      more: {
       type: Number,
     },
+    marked: {
+      type: Boolean,
+      default:false
+    },
   },
+  data(){
+    return{
+      // markeddd: false
+    }
+  }
 }
 </script>
 
@@ -77,8 +85,11 @@ export default {
       padding: 10px;
       color: #fff;
     }
-    .fa-heart-o{
-      margin-right: 20px;
+    .fa.fa-rocket{
+      margin-left: 20px;
+    }
+    .fa.fa-heart{
+      cursor: pointer;
     }
   }
 }

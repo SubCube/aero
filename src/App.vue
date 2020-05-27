@@ -9,6 +9,8 @@
       :name="card.title"
       :price="card.code.toString()"
       :more="cards.length"
+      :marked="card.inFav"
+      @mark="toFav(card.id)"
     >
     <div slot="karak" class="karak" v-for="(item,idx) in card.params" :key="idx">
       <div class="name">{{item.name}}</div>
@@ -42,15 +44,25 @@ export default {
   data(){
     return{
       cards: null,
-      selected: []
+      selected: [],
+      test: null
     }
   },
   created: async function(){
     this.cards = await Controller.fetchPosts()
+
   },
   methods:{
     toConsole(data){
       console.log([...data])
+    },
+   async toFav(id){
+     //Определяем индекс искомого объекта
+     const current = this.cards.find(item=>item.id === id)
+     const idx = this.cards.indexOf(current)
+     //Получаем готовый объеки с новым значением с сервера
+      const newItem= await Controller.addToFavorit(id)
+      this.cards.splice(idx, 1, newItem)
     }
   }
 
