@@ -1,7 +1,7 @@
 <template>
  <div class="wrapper">
      <div class="button-wrapper">
-         <button class="btn" @click="$emit('ff', selected)">Показать результат</button>
+         <button class="btn" @click="$emit('filter', selected)">Показать результат</button>
          <button class="btn gray" @click="selected.splice(0,selected.length)">Очистить фильтр</button>
      </div>
       <div class="item" v-for="item in filter" :key="item.id">

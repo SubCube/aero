@@ -25,6 +25,19 @@ app.post('/favorit', async (req, res) => {
     res.json(current)
 })
 
+//Фильтры
+app.post('/filter', async (req, res) => {
+    const favorite = await req.body
+    let filteredItems = [];
+    items.forEach(item => {
+        for (let i = 0; i < favorite.length; i++){
+            if (item.title.indexOf(favorite[i]) > -1) {
+                filteredItems.push(item)
+            }
+        }
+    })
+    res.json(filteredItems)
+})
 
 app.listen(PORT, () => {
     console.log(`Server has been started on port ${PORT}`)

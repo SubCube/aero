@@ -22,7 +22,7 @@
     <div class="filter">
        <filters
       :selected="selected"
-      @ff="toConsole"
+      @filter="filterItems"
     />
     </div>
     </div>
@@ -53,8 +53,11 @@ export default {
 
   },
   methods:{
-    toConsole(data){
-      console.log([...data])
+   async filterItems(data){
+      const result = await Controller.filterItems(data)
+      console.log('res', result)
+      console.log('data',[...data])
+      this.cards = result
     },
    async toFav(id){
      //Определяем индекс искомого объекта

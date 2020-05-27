@@ -19,6 +19,22 @@ class Post {
             } catch (err) {
                 console.log(err)
       }
+        }
+            static async  filterItems(arr) {
+            try {
+            let data = await fetch('http://localhost:3000/filter', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json;charset=utf-8'
+                                    },
+                                    body: JSON.stringify([...arr])
+                                    })
+            .then(response => response.json())
+
+         return data
+            } catch (err) {
+                console.log(err)
+      }
    }
 }
 
