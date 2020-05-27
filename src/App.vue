@@ -23,6 +23,7 @@
        <filters
       :selected="selected"
       @filter="filterItems"
+      @clean="getPosts()"
     />
     </div>
     </div>
@@ -49,7 +50,7 @@ export default {
     }
   },
   created: async function(){
-    this.cards = await Controller.fetchPosts()
+    await this.getPosts()
 
   },
   methods:{
@@ -66,6 +67,9 @@ export default {
      //Получаем готовый объеки с новым значением с сервера
       const newItem= await Controller.addToFavorit(id)
       this.cards.splice(idx, 1, newItem)
+    },
+    async getPosts(){
+      this.cards = await Controller.fetchPosts()
     }
   }
 
