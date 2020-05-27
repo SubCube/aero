@@ -1,18 +1,59 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="content">
+   <div class="card-wrapper">
+        <card
+      v-for="(card,index) in cards"
+      :key="index"
+      :art="card.code"
+      :name="card.title"
+      :price="card.code.toString()"
+      :more="cards.length"
+    >
+    <div slot="karak" class="karak" v-for="(item,idx) in card.params" :key="idx">
+      <div class="name">{{item.name}}</div>
+      <div class="value"> {{item.value}}</div>
+    </div>
+    </card>
+   </div>
+    <div class="sidebar">
+    <div class="filter">
+       <filters
+      :selected="selected"
+      @ff="toConsole"
+    />
+    </div>
+    </div>
+  </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Card from './components/Card.vue'
+import Filters from './components/Filters.vue'
+import Controller from './controllers/Item'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    'card' : Card,
+    'filters' : Filters
+  },
+  data(){
+    return{
+      cards: null,
+      selected: []
+    }
+  },
+  created: async function(){
+    this.cards = await Controller.fetchPosts()
+  },
+  methods:{
+    toConsole(data){
+      console.log([...data])
+    }
   }
+
 }
 </script>
 
@@ -21,8 +62,38 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 20px;
+}
+.karak{
+  display: flex;
+  justify-content: flex-start;
+  .name{
+    font-size: 14px;
+    margin-right: 15px;
+  }
+}
+.content{
+  display: flex;
+  width: 100%;
+  .card-wrapper{
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(226, 226, 226);
+    padding: 10px;
+    padding-right: 0;
+  }
+  .sidebar{
+    width: 340px;
+    background-color: rgb(226, 226, 226);
+    padding: 10px;
+    padding-left: 0;
+    .filter{
+      margin-top: 20px;
+      padding: 30px;
+      background-color: #fff;
+    }
+  }
 }
 </style>
