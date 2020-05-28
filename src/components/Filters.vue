@@ -1,10 +1,10 @@
 <template>
  <div class="wrapper">
      <div class="button-wrapper">
-         <button class="btn" @click="$emit('filter', selected)">Показать результат</button>
-         <button class="btn gray" @click="$emit('clean') && selected.splice(0,selected.length)">Очистить фильтр</button>
+         <button class="btn" @click="$emit('filter', selected)" :disabled="selected.length == 0">Показать результат</button>
+         <button class="btn gray" @click="$emit('clean') && selected.splice(0,selected.length)" :disabled="selected.length == 0">Очистить фильтр</button>
      </div>
-      <div class="item" v-for="item in filter" :key="item.id">
+      <div class="item" v-for="item in filters" :key="item.id">
           <input type="checkbox" :id="item.id" :value="item.name" v-model="selected">
             <label :for="item.id">{{item.name}}</label>
       </div>
@@ -16,7 +16,7 @@ export default {
     name: 'Filters',
     data(){
         return{
-                  filter:[
+                  filters:[
                     {id:1, name: 'Canon'},
                     {id:2, name: 'Fijufilm'},
                     {id:3, name: 'Nikon'},
