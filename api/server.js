@@ -12,22 +12,22 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-app.get('/', async (req, res) => {
+app.get('/',  (req, res) => {
     // console.log(items.filter(item=>item.title.indexOf('Canon') > -1))
     res.json(items)
 })
 
 // Добавить в избранное
-app.post('/favorit', async (req, res) => {
-    const favorite = await req.body.id
+app.post('/favorit',  (req, res) => {
+    const favorite =  req.body.id
     const current = items.find(item => item.id === favorite)
     current.inFav = !current.inFav
     res.json(current)
 })
 
 //Фильтры
-app.post('/filter', async (req, res) => {
-    const favorite = await req.body
+app.post('/filter',  (req, res) => {
+    const favorite =  req.body
     let filteredItems = [];
     items.forEach(item => {
         for (let i = 0; i < favorite.length; i++){

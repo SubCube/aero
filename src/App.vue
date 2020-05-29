@@ -3,12 +3,12 @@
   <div class="content">
    <div class="card-wrapper">
         <card
-      v-for="(card,index) in cards"
+      v-for="(card,index) in allPosts"
       :key="index"
       :art="card.code"
       :name="card.title"
       :price="card.code.toString()"
-      :more="cards.length"
+      :more="allPosts.length"
       :marked="card.inFav"
       @mark="toFav(card.id)"
     >
@@ -23,7 +23,7 @@
        <filters
       :selected="selected"
       @filter="filterItems"
-      @clean="getPosts()"
+      @clean="fetchPosts()"
     />
     </div>
     </div>
@@ -35,6 +35,7 @@
 import Card from './components/Card.vue'
 import Filters from './components/Filters.vue'
 import Controller from './controllers/Item'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'App',
@@ -49,17 +50,14 @@ export default {
       test: null
     }
   },
-  created: async function(){
-    await this.getPosts()
-
+  computed: {
+    ...mapGetters(['allPosts'])
+  },
+   created: async function(){
+    this.fetchPosts()
   },
   methods:{
-   async filterItems(data){
-      const result = await Controller.filterItems(data)
-      console.log('res', result)
-      console.log('data',[...data])
-      this.cards = result
-    },
+    ...mapActions(['fetchPosts', 'filterItems']),
    async toFav(id){
      //Определяем индекс искомого объекта
      const current = this.cards.find(item=>item.id === id)
@@ -68,9 +66,6 @@ export default {
       const newItem= await Controller.addToFavorit(id)
       this.cards.splice(idx, 1, newItem)
     },
-    async getPosts(){
-      this.cards = await Controller.fetchPosts()
-    }
   }
 
 }
