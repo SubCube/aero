@@ -13,30 +13,35 @@ app.use(bodyParser.json())
 
 
 app.get('/',  (req, res) => {
-    // console.log(items.filter(item=>item.title.indexOf('Canon') > -1))
     res.json(items)
 })
 
 // Добавить в избранное
 app.post('/favorit',  (req, res) => {
-    const favorite =  req.body.id
-    const current = items.find(item => item.id === favorite)
+    const itemId =  req.body.id
+    const current = items.find(item => item.id === itemId)
     current.inFav = !current.inFav
-    res.json(current)
+    let map = new Map()
+    map.set(itemId, current.inFav)
+    res.json(Array.from(map))
 })
 
 //Фильтры
 app.post('/filter',  (req, res) => {
-    const favorite =  req.body
-    let filteredItems = [];
-    items.forEach(item => {
-        for (let i = 0; i < favorite.length; i++){
-            if (item.title.indexOf(favorite[i]) > -1) {
-                filteredItems.push(item)
+    const filters = req.body
+    if (filters.length) {
+        let filteredItems = [];
+        items.forEach(item => {
+            for (let i = 0; i < filters.length; i++){
+                if (item.title.indexOf(filters[i]) > -1) {
+                    filteredItems.push(item)
+                }
             }
-        }
-    })
-    res.json(filteredItems)
+        })
+        res.json(filteredItems)
+    } else {
+        res.json(items)
+    }
 })
 
 app.listen(PORT, () => {

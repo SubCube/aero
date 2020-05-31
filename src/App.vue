@@ -9,8 +9,8 @@
       :name="card.title"
       :price="card.code.toString()"
       :more="allPosts.length"
-      :marked="card.inFav"
-      @mark="toFav(card.id)"
+      :marked="markedPosts.get(card.id)"
+      @mark="addToFavorit(card.id)"
     >
     <div slot="karak" class="karak" v-for="(item,idx) in card.params" :key="idx">
       <div class="name">{{item.name}}</div>
@@ -22,7 +22,7 @@
     <div class="filter">
        <filters
       :selected="selected"
-      @filter="filterItems"
+      @filter="filterPosts"
       @clean="fetchPosts()"
     />
     </div>
@@ -34,7 +34,7 @@
 <script>
 import Card from './components/Card.vue'
 import Filters from './components/Filters.vue'
-import Controller from './controllers/Item'
+// import Controller from './controllers/Item'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
@@ -51,21 +51,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allPosts'])
+    ...mapGetters(['allPosts', 'markedPosts'])
   },
    created: async function(){
     this.fetchPosts()
   },
   methods:{
-    ...mapActions(['fetchPosts', 'filterItems']),
-   async toFav(id){
-     //Определяем индекс искомого объекта
-     const current = this.cards.find(item=>item.id === id)
-     const idx = this.cards.indexOf(current)
-     //Получаем готовый объеки с новым значением с сервера
-      const newItem= await Controller.addToFavorit(id)
-      this.cards.splice(idx, 1, newItem)
-    },
+    ...mapActions(['fetchPosts', 'filterPosts', 'addToFavorit']),
+  //  async toFav(id){
+  //    //Определяем индекс искомого объекта
+  //    const current = this.cards.find(item=>item.id === id)
+  //    const idx = this.cards.indexOf(current)
+  //    //Получаем готовый объеки с новым значением с сервера
+  //     const newItem= await Controller.addToFavorit(id)
+  //     this.cards.splice(idx, 1, newItem)
+  //   },
   }
 
 }

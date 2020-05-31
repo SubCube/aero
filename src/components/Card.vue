@@ -12,7 +12,11 @@
       <div class="shopping">
         <button class="btn"><i class="fa fa-shopping-cart"></i> Купить</button>
         <div class="icons">
-          <i class="fa fa-heart"  :style="marked && {color:'red'}" @click="$emit('mark')"></i>
+          <subscribe
+          @mark="$emit('mark')"
+          :marked="marked"
+          />
+          <!-- <i class="fa fa-heart"  :style="marked && {color:'red'}" @click="$emit('mark')"></i> -->
           <i class="fa fa-rocket"></i>
         </div>
       </div>
@@ -20,8 +24,13 @@
 </template>
 
 <script>
+import Subscribe from './Subscribe'
+
 export default {
   name: 'Card',
+  components:{
+    'subscribe' : Subscribe
+  },
   props: {
     art: {
       type: Number,
